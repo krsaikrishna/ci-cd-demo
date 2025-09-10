@@ -22,7 +22,7 @@ pipeline {
 
         stage('Docker Build & Push') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
                 sh """
                     docker login -u $DOCKER_USER -p $DOCKER_PASS
                     docker build -t $DOCKER_USER/ci-cd-demo:${BUILD_NUMBER} .
@@ -34,9 +34,7 @@ pipeline {
 
         stage('Deploy to Kubernetes') {
             steps {
-                sh """
-                    kubectl set image deployment/ci-cd-demo ci-cd-demo=$DOCKER_USER/ci-cd-demo:${BUILD_NUMBER}
-                """
+                sh 'kubectl set image deployment/ci-cd-demo ci-cd-demo=krsaikrishna/ci-cd-demo:${BUILD_NUMBER}'
             }
         }
     }
