@@ -22,11 +22,13 @@ pipeline {
 
         stage('Docker Build & Push') {
             steps {
+                withCredentials([usernamePassword(credentialsId: 'your-dockerhub-id', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
                 sh """
-                docker build -t $DOCKER_HUB/$APP_NAME:${BUILD_NUMBER} .
-                echo $DOCKER_PASS | docker login -u $DOCKER_HUB --password-stdin
-                docker push $DOCKER_HUB/$APP_NAME:${BUILD_NUMBER}
+                    docker login -u $DOCKER_USER -p $DOCKER_PASS
+                    docker build -t myrepo/myimage:${BUILD_NUMBER} .
+                    docker push $DOCKER_USER/ci-cd-demo:${BUILD_NUMBER}
                 """
+               }
             }
         }
 
