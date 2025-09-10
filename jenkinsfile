@@ -34,7 +34,8 @@ pipeline {
 
         stage('Deploy to Kubernetes') {
             steps {
-                sh 'kubectl set image deployment/ci-cd-demo ci-cd-demo=krsaikrishna/ci-cd-demo:${BUILD_NUMBER}'
+                withEnv(["KUBECONFIG=/var/lib/jenkins/.kube/config"]) {
+                    sh 'kubectl set image deployment/ci-cd-demo ci-cd-demo=krsaikrishna/ci-cd-demo:${BUILD_NUMBER}'
             }
         }
     }
