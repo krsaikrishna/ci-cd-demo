@@ -36,6 +36,7 @@ pipeline {
             steps {
                 withEnv(["KUBECONFIG=/var/lib/jenkins/.kube/config"]) {
                     sh 'kubectl set image deployment/ci-cd-demo ci-cd-demo=krsaikrishna/ci-cd-demo:${BUILD_NUMBER}'
+               }
             }
         }
     }
