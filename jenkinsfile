@@ -35,8 +35,7 @@ pipeline {
         stage('Deploy to Kubernetes') {
             steps {
                 sh """
-                kubectl set image deployment/$APP_NAME $APP_NAME=$DOCKER_HUB/$APP_NAME:${BUILD_NUMBER} --record
-                kubectl rollout status deployment/$APP_NAME
+                    kubectl set image deployment/ci-cd-demo ci-cd-demo=$DOCKER_USER/ci-cd-demo:${BUILD_NUMBER}
                 """
             }
         }
